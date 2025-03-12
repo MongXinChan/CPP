@@ -4,3 +4,6 @@
 settings.json
 .DS_Store
 .vscode
+.exe
+.idea
+output/

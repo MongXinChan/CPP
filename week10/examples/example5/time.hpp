@@ -5,6 +5,7 @@ class MyTime
 {
     int hours;
     int minutes;
+    //总共的小时和分钟
   public:
     MyTime(): hours(0), minutes(0)
     {
@@ -18,6 +19,7 @@ class MyTime
     }
     MyTime(int h, int m): hours(h), minutes(m)
     {
+        //
         std::cout << "Constructor MyTime(int,int)" << std::endl;
     }
     MyTime & operator=(int m)

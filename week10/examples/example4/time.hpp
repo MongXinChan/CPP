@@ -51,4 +51,5 @@ class MyTime
         os << str;
         return os;
     }
+    //重载<<,而且输入输出流只能存在于缓存中，所以只能用&
 };

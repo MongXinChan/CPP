@@ -8,6 +8,8 @@ class Student
   private:
     static size_t student_total; // declaration only
     //inline static size_t student_total = 0; //C++17, definition outside isn't needed
+    //不是只能有一个return语句，是静态成员函数没有this指针，
+    //只能使用类的静态成员变量，不能使用其他成员变量
     char * name;
     int born;
     bool male; 
@@ -73,6 +75,7 @@ void Student::printInfo()
 }
 
 size_t Student::student_total = 0; // definition it here
+//静态变量属于类，不属于实例化对象
 
 int main()
 {
