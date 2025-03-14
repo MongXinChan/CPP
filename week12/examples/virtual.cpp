@@ -19,6 +19,9 @@ class Person2
     string name;
     Person2(string n): name(n){}
     virtual void print() = 0; 
+    //virtual function equal to 0 means it is a pure virtual function
+    //A class with at least one pure virtual function is called an abstract class
+    //A class with no pure virtual function is called a concrete class
 };
 
 class Student: public Person
@@ -33,8 +36,14 @@ class Student: public Person
     }
 };
 
+/****
+ * This function is determined for all objects printed
+ * ***/
 void printObjectInfo(Person & p)
 {
+    //It call the print by the base class.
+    //if print() is not a virtual function, 
+    //different output if its destructor is not virtual
     p.print();
 }
 

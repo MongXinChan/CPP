@@ -56,7 +56,27 @@ class FloatMat
     {
         delete [] data;
     }
+    /****
+     * The copy constructor and the assignment operator are deleted.
+     * means FloatMat cannot be copied or assigned.
+     * 
+     * 
+     * FloatMat fmat2(fmat); //error
+     * 
+     * Because it try to call the copy constructor.
+     * The copy constructor is deleted or say it is not defined(I consider
+     * that the copy constructor is banned).
+     * 
+    * ***/
     FloatMat(const FloatMat&) = delete;
+    /****
+     * 
+     * FloatMat fmat3(2,3);
+     * fmat3 = fmat; //error
+     * 
+     * Because it try to call the assignment operator.
+     * 
+    * ***/
     FloatMat& operator=(const FloatMat&) = delete;
     float getElement(size_t r, size_t c);
     bool setElement(size_t r, size_t c, float value);

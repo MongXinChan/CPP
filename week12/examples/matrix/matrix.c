@@ -10,12 +10,26 @@ Matrix * createMat(size_t rows, size_t cols)
     if(rows == 0 || cols == 0)
     {
         fprintf(stderr, "rows and/or cols is 0.\n");
+        //print the wrong into the standard error stream
+        //why not is the standard output stream?
+        
+        /***
+         * In Linux,if we put the standard error stream 
+         * to the standard output stream,we will accept the information
+         * from the standard output stream.
+         *
+         * So we should use the standard error stream to print the error message.
+         * ***/
         return NULL;
     }
     // allocate memory
     p = (Matrix *) malloc(sizeof(Matrix));
     if( p == NULL )
     {
+        /***
+         * check out the return value of malloc
+         * if it's NULL, it means that the memory allocation failed.
+         * ***/
         fprintf(stderr, "Failed to allocate memory for a matrix.\n");
         return NULL;
     }
@@ -25,6 +39,14 @@ Matrix * createMat(size_t rows, size_t cols)
 
     if(p->data == NULL)
     {
+        /***
+         * Why we use the twice?
+         * Because we allocate memory for the matrix data,
+         * and also for the matrix structure.
+         * 
+         * If we failed to allocate memory for the matrix data,
+         * we should free the memory we allocated for the matrix structure.
+         * ***/
         fprintf(stderr, "Failed to allocate memory for the matrix data.\n");
         free(p); //Don't forget to free memory here!
         return NULL;
@@ -37,13 +59,26 @@ bool releaseMat(Matrix * p)
 {
     //don't forget to check a pointer before using it
     if (!p) return false;
-
+    //if not 0,we couldnot distinguish between NULL and a valid pointer
     if(p->data) free(p->data);
 
     free(p);
 
     return true;
 }
+
+/**** 
+ * Profecessor's tips:
+ * 
+ * 1. If the function is `memory manage`,we just need to check the return value of malloc.
+ * 2. If the function is `arithmetic`, we just use the arithmetic implements.
+ * 
+ * Why we need to do this?
+ * The way best to check the position of the error is to use the `assert` function.
+ * But we don't use it here because we don't know how to use it.
+ *
+ * 
+ *  ***/
 
 bool add(const Matrix * input1, const Matrix * input2, Matrix *output)
 {
@@ -83,6 +118,15 @@ bool add(const Matrix * input1, const Matrix * input2, Matrix *output)
         return false;
     }
 
+    /*** *
+     * In debuging, we use the fprintf to print the error message.
+     * But in release mode, we use the assert to check the parameters.
+     * So we should use the fprintf to print the error message in release mode.
+     * 
+     * Why we use the fprintf to print the error message in release mode?
+     * Because we donot leak the function name and let's evil people know the position of the error.
+     *
+     * ***/
     if( input1->rows != input2->rows || input2->rows != output->rows ||
         input1->cols != input2->cols || input2->cols != output->cols)
     {
