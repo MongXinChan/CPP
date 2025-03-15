@@ -20,3 +20,18 @@ int main()
         div2(n);
     return 0;
 }
+
+/**** 
+ * 
+ * recommendation:
+ * 1. use fprintf(stderr, "Error: ...\n", ...) to output error message
+ * 2. use fprintf(stdout, "Info: ...\n", ...) to output info message
+ * 
+ * It is a good practice to separate error message from info message.
+ * 
+ * If you wanna learn more about fprintf, 
+ * you can refer to the link below:
+ * https://www.bilibili.com/video/BV1Vf4y1P7pq?p=62&vd_source=ea3c25b2fb27b611411c3ed78cb9f61f
+ * time : 13:04
+ * 
+ * ****/

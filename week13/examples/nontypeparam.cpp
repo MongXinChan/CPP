@@ -17,8 +17,17 @@ class Mat
     bool setElement(size_t r, size_t c, T value);
 };
 template<typename T, size_t rows, size_t cols>
+/****
+ * The function belong to the Mat<T,rows,cols>
+ * 
+ * ***/
 T Mat<T, rows, cols>::getElement(size_t r, size_t c)
 {
+    /***
+     * We could consider that the template dependes on the compile
+     * to generate the code.
+     * 就矩阵和图像其实很好理解，没有了new和malloc，编译的时候确定内存的size
+     * ***/
     if ( r >= rows || c >= cols)
     {
         cerr << "getElement(): indices are out of range" << endl;
