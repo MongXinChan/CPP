@@ -1,10 +1,16 @@
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
 #include <cfloat>
 
 float ratio(float a, float b)
 {
     if (fabs(a + b) < FLT_EPSILON)
+    /****
+     * FOLLOW BY THE CAUCULASTIC RULE,EPSILON means 
+     * the smallest positive number.
+     * 
+    * ***/
     {
         std::cerr << "The sum of the two arguments is close to zero." << std::endl;
         std::abort();

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
 #include <cfloat>
 
 bool ratio(float a, float b, float & c)
