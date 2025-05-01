@@ -111,7 +111,7 @@ If there are several files in directory, put each file into the **add_executable
 
 ### **1.3.2 Multi-source files in a project-2**
 
-![image-20250429235623990](./images/multiSource23png)
+![image-20250429235623990](./images/multiSource3.png)
 
 ```cmake
 aux_source_directory(. DIR_SRCS)
