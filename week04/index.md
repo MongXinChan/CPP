@@ -5,7 +5,7 @@ updated: 2025-04-28
 description: 'CMake作为生成Makefile文件的最佳利器，我们会在这一实验中进行练习，并且穿插一部分输入和存储类型'
 image: ''
 tags: [ComputerScience,ProgramDesign,Cpp,Ubuntu,Linux ]
-category: 'ComputerScience''English'
+category: 'ComputerScience-En'
 draft: false 
 lang: en
 ---

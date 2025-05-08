@@ -5,7 +5,7 @@ updated: 2025-04-27
 description: '本文强调所学Linux操作系统的指令，这些指令可以帮助我们快速熟悉Linux/Ubuntu操作系统。'
 image: ''
 tags: [ComputerScience,ProgramDesign,Cpp,Ubuntu,Linux ]
-category: 'ComputerScience''English'
+category: 'ComputerScience-En'
 draft: false 
 lang: en
 ---

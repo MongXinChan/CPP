@@ -5,7 +5,7 @@ updated: 2025-04-28
 description: ''
 image: ''
 tags: [ComputerScience,ProgramDesign,Cpp,Ubuntu,Linux ]
-category: 'ComputerScience''English'
+category: 'ComputerScience-En'
 draft: false 
 lang: en
 ---
