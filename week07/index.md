@@ -42,7 +42,7 @@ lang: en
 
 # Shared library
 
-![image-20250512164158201](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512164158201.png)
+![image-20250512164158201](./images/image-20250512164158201.png)
 
 |                 | **advantages**                                               | **disadvantages**                                            |
 | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -65,7 +65,7 @@ g++ -shared -fPIC -o libmymath.so mymath.cpp
 
 
 
-![image-20250512164633161](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512164633161.png)
+![image-20250512164633161](./images/image-20250512164633161.png)
 
 ## 1.2 Using shared library
 
@@ -73,7 +73,7 @@ g++ -shared -fPIC -o libmymath.so mymath.cpp
 
 - Let’s compile `main`:
 
-    ![image-20250512164824193](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512164824193.png)
+    ![image-20250512164824193](./images/image-20250512164824193.png)
 
     ```bash
     g++ -o main main.cpp -L. -lmymath
@@ -85,7 +85,7 @@ g++ -shared -fPIC -o libmymath.so mymath.cpp
 
 After the `main` has been compiled, try to run it:
 
-![image-20250512165341032](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512165341032.png)
+![image-20250512165341032](./images/image-20250512165341032.png)
 
 ```bash
 ./main
@@ -110,15 +110,15 @@ After the `main` has been compiled, try to run it:
     ./main
     ```
 
-    ![image-20250512165545929](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512165545929.png)
+    ![image-20250512165545929](./images/image-20250512165545929.png)
 
-    ![image-20250512165614830](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512165614830.png)
+    ![image-20250512165614830](./images/image-20250512165614830.png)
 
 - Another choice is to move your .so file to **/us/lib** folder by **mv** command
 
-    ![image-20250512165634688](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512165634688.png)
+    ![image-20250512165634688](./images/image-20250512165634688.png)
 
-![image-20250512170230855](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512170230855.png)
+![image-20250512170230855](./images/image-20250512170230855.png)
 
 ```bash
 # makefile with dynamic library
@@ -139,9 +139,9 @@ clean:
 
 result:
 
-![image-20250512170222467](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512170222467.png)
+![image-20250512170222467](./images/image-20250512170222467.png)
 
-![image-20250512171927625](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512171927625.png)
+![image-20250512171927625](./images/image-20250512171927625.png)
 
 ```makefile
 # 定义编译器
@@ -224,19 +224,19 @@ clean :
 
 We want to create a dynamic library by function.cpp and call the dynamic library in main.cpp. This time we write two CMakeLists.txt files, one in **CmakeDemo5** folder and another in **lib** folder.
 
-![image-20250512172857556](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512172857556.png)
+![image-20250512172857556](./images/image-20250512172857556.png)
 
-![image-20250512172906594](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512172906594.png)
+![image-20250512172906594](./images/image-20250512172906594.png)
 
-More detail click here
+[More detail click here](https://github.com/MongXinChan/SUST-Cpp-course/blob/main/lab07/shared%20library-02/Makefile)
 
 # Function and Memory
 
-![image-20250512172952553](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512172952553.png)
+![image-20250512172952553](./images/image-20250512172952553.png)
 
 ## 2.1 function address
 
-![image-20250512173007833](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512173007833.png)
+![image-20250512173007833](./images/image-20250512173007833.png)
 
 Here is the five memory type. We could run the code to understand it.
 
@@ -262,13 +262,13 @@ int main(){
 }
 ```
 
-![image-20250512173425966](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512173425966.png)
+![image-20250512173425966](./images/image-20250512173425966.png)
 
 ## 2.2 maps, executable memory
 
 Q. What the specific memory usage during the execution of the “p3_demo1” program ?
 
-![image-20250512173632047](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512173632047.png)
+![image-20250512173632047](./images/image-20250512173632047.png)
 
 ```bash
 gcc -shared -fPIC -o libmymath.so mymath.c
@@ -278,9 +278,9 @@ export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
 ./p2_demo1
 ```
 
-![image-20250512174539920](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512174539920.png)
+![image-20250512174539920](./images/image-20250512174539920.png)
 
-You can click here to visit the more detail of the code.
+[You can click here to visit the more detail of the code.](https://github.com/MongXinChan/SUST-Cpp-course/tree/main/lab07)
 
 > [!TIP]
 >
@@ -291,7 +291,7 @@ You can click here to visit the more detail of the code.
 >
 > [MORE](https://man7.org/linux/man-pages/man5/proc_pid_maps.5.html)
 
-![image-20250512174632993](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512174632993.png)
+![image-20250512174632993](./images/image-20250512174632993.png)
 
 # Exercise
 
@@ -299,9 +299,20 @@ You can click here to visit the more detail of the code.
 
 Overload a function **bool** **vabs(int \* p, int n)** which can compute the absolute value for every element of an array, the array can be int, float and double.
 
+```cpp
+#ifndef VABS_H
+#define VABS_H
 
+#include <cstddef> // for size_t
 
- Should n be int or size_t? what's the difference? Remember to check whether the pointer is valid.
+bool vabs(int* p, size_t n);
+bool vabs(float* p, size_t n);
+bool vabs(double* p, size_t n);
+
+#endif // VABS_H
+```
+
+ Should be int or size_t? what's the difference? Remember to check whether the pointer is valid.
 
 
 
@@ -314,6 +325,10 @@ Create a static library “libvabs.a” with 3 overloaded vabs() functions in it
 
 
 Conclude the difference between static library and shared library according to your experimental results.
+
+
+
+[Click here to visit the implements.](https://github.com/MongXinChan/SUST-Cpp-course/tree/main/lab07/Exe01)
 
 ## 3.2 Exercise 2
 
@@ -328,7 +343,7 @@ struct stuinfo{
 };
 ```
 
-![image-20250512185044382](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250512185044382.png)
+![image-20250512185044382](./images/image-20250512185044382.png)
 
 ```cpp
 #include <iostream> // Or other necessary includes like <string> or <cstdio>
