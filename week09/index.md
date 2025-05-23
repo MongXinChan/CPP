@@ -63,7 +63,7 @@ Static member variables are shared among all objects of a class. This means that
 
 - **Definition and Initialization**:
 
-    ```
+    ```CPP
     // Declare in class definition
     class StaticTest {
     private:
@@ -76,7 +76,7 @@ Static member variables are shared among all objects of a class. This means that
     int StaticTest::m_value = 12;
     ```
 
-    `[Image of static member variable declaration and definition code]`
+    ![image-20250523155255197](./images/image-20250523155255197-1747992907410-10.png)
 
 ## 1.2 Static Member Functions
 
@@ -108,7 +108,13 @@ Static member functions can be called independently of any object of the class. 
     // int val2 = StaticTest::getValue(); // Call via class name
     ```
 
-    `[Image of static member function definition and invocation code]`
+    ![image-20250523155306035](./images/image-20250523155306035-1747992907410-11.png)
+    
+    ![image-20250523155157647](./images/image-20250523155157647-1747992907410-12.png)
+    
+    > [!TIP]
+    >
+    > You can use **object** or **class** to access the **<u>static members</u>**.
 
 ## 1.3 Const Member Variables
 
@@ -130,12 +136,12 @@ The `const` keyword specifies that a variable's value is constant and tells the 
             // constructor body
         }
         void show_x() {
-            // std::cout << "Value of constant x: " << x;
+             std::cout << "Value of constant x: " << x;
         }
     };
     ```
 
-    `[Image of const member variable definition and initialization code]`
+    ![image-20250523172826600](./images/image-20250523172826600.png)
 
 - **Static Const Member Variable**:
 
@@ -150,10 +156,16 @@ The `const` keyword specifies that a variable's value is constant and tells the 
     public:
         // ...
     };
-    // For non-integral types or those needing more complex initialization,
-    // define static const outside the class.
-    // const int Person::Len; // If not initialized in-class, define outside.
-    ```[Image of static const member variable initialization code]`
+    
+    //const int Person::Len;
+    ~~~
+    
+    For non-integral types or those needing more complex initialization,define `static const` outside the class.
+    
+    `const int Person::Len;` 
+    
+    If **not** initialized in-class, **<u>define outside</u>**.
+    
     Alternatively, an enumeration can be used to define an in-class constant:
     ```cpp
     class Person {
@@ -163,9 +175,7 @@ The `const` keyword specifies that a variable's value is constant and tells the 
     public:
         // ...
     };
-    ~~~
-
-    `[Image of using enum to define in-class constant code]`
+    ```
 
 ## 1.4 Const Member Functions
 
@@ -192,13 +202,13 @@ A const member function promises not to modify any data members of the object th
     };
     
     // complex.cpp
-    // void Complex::Show() const { // Define const member function
-    //     std::cout << real << " + " << imag << "i" << std::endl;
-    // }
     
+    void Complex::Show() const { // Define const member function
+         std::cout << real << " + " << imag << "i" << std::endl;
+    }
     ```
 
-    `[Image of const member function declaration and definition code]`
+    ![image-20250523162045625](./images/image-20250523162045625-1747992907410-13.png)
 
 ## 1.5 `this` Pointer
 
@@ -206,8 +216,8 @@ Each class has only one copy of its member functions, but there can be many obje
 
 - **Characteristics**:
 
-    - Inside a non-static member function, the `this` pointer points to the object that invoked the member function.
-    - `this` is a constant pointer; you cannot change the value of the `this` pointer itself, but you can modify the content of the object it points to (unless in a `const` member function).
+    - Inside a **non-static** member function, the `this` pointer points to the object that invoked the member function.
+    - `this` is a constant pointer; you **<u>CANNOT change</u>** the value of the `this` pointer itself, but you can modify the content of the object it points to (unless in a `const` member function).
     - Its type is `ClassName* const` (for non-`const` member functions) or `const ClassName* const` (for `const` member functions).
     - Often used to return a reference or pointer to the object itself, or to distinguish between member variables and parameters with the same name within a member function.
 
@@ -232,49 +242,26 @@ Each class has only one copy of its member functions, but there can be many obje
     
     ```
 
-    `[Image of this pointer usage example code]`
+    ![image-20250523160137921](./images/image-20250523160137921-1747992907410-14.png)
 
-#  C++ Class vs. Python Class Comparison
-
-| **Feature**                       | **C++**                                                      | **Python**                                                   |
-| --------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Access Control, Encapsulation** | Controls member access through `public`, `private`, and `protected`. | No strict access control; privacy is simulated through naming conventions (e.g., `_` or `__`). |
-| **Constructors, Destructor**      | Explicitly define constructor (same name as class) and destructor (`~ClassName`), controllable memory release. | Use `__init__` constructor and `__del__` destructor, but `__del__` call is determined by garbage collection. |
-| **Method invocation, self/this**  | Implicit use of `this` pointer without explicit declaration. | Methods need to explicitly declare the `self` parameter to represent the object itself. |
-| **Static methods, class methods** | Directly declare static member functions.                    | Use `@staticmethod` or `@classmethod` decorators.            |
-| **Dynamics, Metaprogramming**     | Class structure is fixed at compile time and cannot be dynamically modified. | Classes and objects can be dynamically modified (e.g., adding methods at runtime). |
-
-[Image of C++ vs Python class feature comparison table]
-
-[Image of C++ and Python code examples implementing similar classes]
-
-**Python Code Example Explanation (Demo(1) and Demo(2) from slides)**:
-
-- Class variables are similar to static member variables in C++.
-- `__init__` is the constructor, used to initialize member variables.
-- The `@property` decorator can turn a method into a read-only attribute, partially similar to the effect of `const` members in C++.
-- `__del__` is the destructor.
-- Regular methods are member functions; the first parameter is typically `self`.
-- The `@classmethod` decorator creates methods similar to static methods in C++, where the first parameter is the class itself (usually named `cls`).
-
-#  C++ Class Con
+#  C++ Class Constructors
 
 A class constructor is a special member function used to create and initialize objects of the class.
 
 - **Characteristics**:
 
-    1. Has the exact same name as the class.
-    2. Has no return type (not even `void`).
+    1. Has the exact **<u>same name</u>** as the class.
+    2. Has **`no`** return type (not even `void`).
     3. Is typically a `public` member function of the class.
-    4. Is invoked automatically whenever an object of that class is created.
+    4. Is **invoked automatically** whenever **<u>an object of that class is created</u>**.
     5. Can be overloaded (i.e., a class can have multiple constructors with the same name, but their parameter lists must differ).
     6. Can have default arguments.
 
 - **Default Constructor**:
 
     - A constructor that takes no arguments, or one where all arguments have default values.
-    - If the programmer provides no constructors for a class, the C++ compiler automatically generates a default constructor. This implicit default constructor does nothing (member variables are not initialized to specific values unless they have in-class initializers).
-    - If the programmer defines any constructor (with or without parameters), the compiler will no longer automatically generate a default constructor. If a way to create an object without arguments is still needed, a default constructor must be explicitly defined.
+    - If the programmer provides **<u>no</u>** constructors for a class, the C++ **<u>compiler automatically generates a default constructor</u>**. This implicit default constructor does nothing (member variables are not initialized to specific values unless they have in-class initializers).
+    - If the programmer defines any constructor (with or without parameters), the compiler will **<u>no longer automatically generate a default constructor</u>**. If a way to create an object without arguments is still needed, a default constructor must be explicitly defined.
     - A class can have only one default constructor.
 
 - **Parameterized Constructor**:
@@ -306,16 +293,32 @@ A class constructor is a special member function used to create and initialize o
     
     ```
 
-    `[Image of Box class constructor example code]`
-    `[Image of Complex class constructor and initializer list example code]`
-
+    ![image-20250523173037871](./images/image-20250523173037871.png)
+    
 - **Object Creation and Constructor Invocation**:
 
-    - `Box first(5.0, 6.0, 9.0);` // Calls parameterized constructor
-    - `Box second;`             // Implicitly calls default constructor
-    - `Box third = Box();`       // Explicitly calls default constructor
-    - `Box *pbox = new Box;`     // Dynamically creates object, implicitly calls default constructor
-    - **Note**: `Box fourth();` declares a function `fourth` that returns a `Box` object, not an object named `fourth` created by the default constructor. To create an object using the default constructor, do not use parentheses.
+    ```CPP
+    Box first(5.0, 6.0, 9.0); // Calls parameterized constructor
+    Box second;            // Implicitly calls default constructor
+    Box third = Box();      // Explicitly calls default constructor
+    Box *pbox = new Box;     // Dynamically creates object, implicitly calls default constructor
+    ```
+    
+    > [!CAUTION]
+    >
+    > `Box fourth();` declares a function `fourth` that returns a `Box` object, not an object named `fourth` created by the default constructor. 
+    >
+    > To create an object using the default constructor, do not use parentheses.
+    
+    > [!TIP]
+    >
+    > 参数化构造函数用于初始化对象时提供具体的参数。
+    >
+    > 默认构造函数用于在没有提供参数时初始化对象。
+    >
+    > 动态创建对象时，使用`new`操作符，会隐式调用默认构造函数。
+    >
+    > 显式调用默认构造函数可以通过`Box()`的形式实现。
 
 # C++ Class Destructors
 
@@ -350,6 +353,27 @@ public:
 };
 ```
 
+#  C++ Class vs. Python Class Comparison
+
+| **Feature**                       | **C++**                                                      | **Python**                                                   |
+| --------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| **Access Control, Encapsulation** | Controls member access through `public`, `private`, and `protected`. | No strict access control; privacy is simulated through naming conventions (e.g., `_` or `__`). |
+| **Constructors, Destructor**      | Explicitly define constructor (same name as class) and destructor (`~ClassName`), controllable memory release. | Use `__init__` constructor and `__del__` destructor, but `__del__` call is determined by garbage collection. |
+| **Method invocation, self/this**  | Implicit use of `this` pointer without explicit declaration. | Methods need to explicitly declare the `self` parameter to represent the object itself. |
+| **Static methods, class methods** | Directly declare static member functions.                    | Use `@staticmethod` or `@classmethod` decorators.            |
+| **Dynamics, Metaprogramming**     | Class structure is fixed at compile time and cannot be dynamically modified. | Classes and objects can be dynamically modified (e.g., adding methods at runtime). |
+
+![image-20250523173454946](./images/image-20250523173454946.png)
+
+**Python Code Example Explanation (Demo(1) and Demo(2) from slides)**:
+
+- Class variables are similar to static member variables in C++.
+- `__init__` is the constructor, used to initialize member variables.
+- The `@property` decorator can turn a method into a read-only attribute, partially similar to the effect of `const` members in C++.
+- `__del__` is the destructor.
+- Regular methods are member functions; the first parameter is typically `self`.
+- The `@classmethod` decorator creates methods similar to static methods in C++, where the first parameter is the class itself (usually named `cls`).
+
 #  Exercises
 
 ## Exercise 1
@@ -363,58 +387,80 @@ public:
 You need to explain the reason to a TA to pass the test.
 
 ```cpp
-// Original problematic code
-/*
 #include<iostream>
 using namespace std;
-class Demo
-{
+class Demo{
     private:
         int id;
-        void display(){ // Private and same name/signature as public display
-             cout<<"this is: "<<this<<", id is:"<<this->id<<endl;
+        void display(){
+        cout<<"this is: "<<this<<", id is:"<<this->id<<endl;
         }
     public :
-    Demo(int cid){ // Should have a default constructor or ensure all objects are created with arguments
-            this->id=cid;
+        Demo(int cid){
+        this->id=cid;
         }
-    static int num;
-    void display() // Tries to access static member num, but is not a static function
+    static int num; 
+    void display()
     {
-       cout<<"The value of the static num is: "<<num<<endl;
+        cout<<"The value of the static num is: "<<num<<endl;
+    }
+}; 
+int main() 
+{
+  Demo obj;
+  Demo obj1(1);
+
+  obj.display();
+  obj1.display();
+
+  Demo::display();
+
+  return 0;
+}
+
+```
+
+My implement：
+
+```cpp
+#include<iostream>
+using namespace std;
+class Demo{
+private:
+    int id;
+public :
+    Demo() : id(0){
+        cout<<"Default constructor called"<<endl;
+    }
+    Demo(int cid){
+        this->id=cid;
+        cout<<"Parameterized constructor called"<<endl;
+    }
+    static int num; 
+    static void display(){
+        cout<<"The value of the static num is: "<<num++<<endl;
+        // Note: A static function cannot access non-static members like 'this->id'
     }
 };
-// int Demo::num; // Static member variable num is not initialized
 
-int main()
+int Demo::num = 10; // Definition and initialization of static member variable
+
+int main() 
 {
-    Demo obj; // Error: No matching constructor Demo::Demo()
+    Demo obj;
     Demo obj1(1);
 
     obj.display();
     obj1.display();
 
-    Demo::display(); // Error: display() is not a static member function
+    Demo::display();
 
     return 0;
 }
-*/
+
 ```
 
-`[Image of Exercise 1 original C++ code]`
-
-**Hints for Solution**:
-
-- **Problem 1**: The original program has multiple compilation errors.
-    - `Demo obj;` will fail because there is no parameterless constructor, and a constructor with parameters has been defined.
-    - `Demo::display();` will fail because `display()` is not a static member function.
-    - The class `Demo` has two member functions named `display`, one `private` and one `public`. This itself is not an error, but the choice during a call depends on access rights and context. If overloading or hiding is intended, care is needed.
-    - The static member variable `num` is declared but not defined and initialized outside the class.
-- **Modification Directions**:
-    - Provide a default constructor for the `Demo` class or modify object creation.
-    - Make the `display` function intended to show `this` and `id` public.
-    - Create a `static` member function (e.g., `displayNum`) to display the static variable `num`, and call it via the class name.
-    - Define and initialize the static member `num` outside the class.
+![image-20250523171023524](./images/image-20250523171023524-1747992907410-15.png)
 
 ## Exercise 2
 
@@ -441,21 +487,25 @@ int main()
   ConstMember o2{42};
   o1.display();
   o2.display();
-//  o1 = o2; // What happens if uncommented?
+//  o1 = o2; // 如果o1=o2,表示值拷贝
   return 0;
 }
 
 ```
 
-`[Image of Exercise 2 C++ code]`
+The results:
 
-**Hints for Solution**:
+![image-20250523171535132](./images/image-20250523171535132-1747992907410-16.png)
 
-- The program will first create two `ConstMember` objects, `o1` and `o2`, initializing their `const` member `m_a` with 666 and 42, respectively. Then, it will call the `display()` function to output the values of their respective `m_a`.
-- If the line `o1 = o2;` is uncommented, the program will fail to compile. The reason is:
-    - The compiler will attempt to generate a default assignment operator function (`operator=`) for the `ConstMember` class.
-    - The default assignment operator would try to perform member-wise assignment, i.e., attempt to execute `o1.m_a = o2.m_a;`.
-    - However, `m_a` is a `const` member variable, and its value cannot be modified after initialization. Therefore, assigning to it is illegal.
+![image-20250523171622694](./images/image-20250523171622694-1747992907410-17.png)
+
+> [!TIP]
+>
+> 编译器会尝试为 `ConstMember` 类生成一个默认的赋值运算符函数 (`operator=`)。
+>
+> 默认的赋值运算符会尝试逐成员赋值，即尝试执行 `o1.m_a = o2.m_a;`。
+>
+> 但是，`m_a` 是一个 `const` 成员变量，它的值在初始化后不能被修改。因此，对其进行赋值操作是非法的。
 
 ## Exercise 3
 
@@ -467,9 +517,9 @@ Use two member variables to represent the private data of the class. Provide a c
 - b) `subtract`—Subtracts two Complex numbers: The real part of the right operand is subtracted from the real part of the left operand, and the imaginary part of the right operand is subtracted from the imaginary part of the left operand.
 - c) `display`—Displays a Complex number in the form of `a + bi` or `a - bi`, where `a` is the real part and `b` is the imaginary part.
 
-**Tip**: If a member function does not modify the member variables, define it as a `const` member function.
-
-**Hints for Solution**:
+> [!TIP]
+>
+> If a member function does not modify the member variables, define it as a `const` member function.
 
 - **Class Definition**:
 
@@ -498,6 +548,10 @@ Use two member variables to represent the private data of the class. Provide a c
 - **`add` and `subtract` Implementation**: Create a new `Complex` object as the result and return it. These functions should be `const` as they don't modify the calling object.
 
 - **`display` Implementation**: Pay attention to the output format, especially when the imaginary part is negative.
+
+Click here to read these code.
+
+![image-20250523172601189](./images/image-20250523172601189-1747992907410-18.png)
 
 ---
 

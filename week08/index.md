@@ -38,25 +38,26 @@ lang: en
 - **Compiling and Running SIMD Code**:
     - Tips for Intel CPUs (AVX2) (Enabling support, Memory Alignment, Compiler Optimizations)
     - Tips for ARM CPUs (NEON)
-    - Week 8 Example Code Compilation Tips
 - **Introduction to OpenMP**:
     - Basic Usage (`#pragma omp parallel for`)
     - Compilation Options
 - **Building Projects with CMake**:
     - `CMakeLists.txt` Example Configuration (SIMD, OpenMP, Optimization)
     - Build Steps
-- **Introduction to Python (Content from Lab08 PPT)**:
+- **Introduction to Python **:
     - Installation, REPL, Basic Types, Mutability/Immutability, Boolean Values, Control Flow, Functions, Modules
 - **Lab Exercises**:
     - SIMD and OpenMP Optimization for Vector Addition
 
 ## Foreword
 
-Welcome to the Lab 8 study notes! This lab primarily introduces the fundamental concepts of SIMD (Single Instruction, Multiple Data) and OpenMP parallel programming. We will explore SIMD instruction sets on Intel and ARM platforms, learn how to use Intrinsics to accelerate programs, and understand the basic usage of OpenMP. Additionally, we will briefly cover the basics of the Python language, which is also part of the Lab08 slides.
+Welcome to the Lab 8 study notes! This lab primarily introduces the fundamental concepts of SIMD (Single Instruction, Multiple Data) and OpenMP parallel programming. 
+
+We will explore SIMD instruction sets on Intel and ARM platforms, learn how to use Intrinsics to accelerate programs, and understand the basic usage of OpenMP. Additionally, we will briefly cover the basics of the Python language.
 
 #  SIMD Technology Overview
 
-SIMD (Single Instruction, Multiple Data) is a parallel computing method that allows a processor to perform the same operation on multiple data elements simultaneously using a single instruction.
+**SIMD** (Single Instruction, Multiple Data) is a **<u>parallel computing method</u>** that allows a processor to perform the same operation on multiple data elements simultaneously using a single instruction.
 
 ## 1.1 Intel SIMD Development
 
@@ -97,31 +98,87 @@ Intrinsics are special functions that map directly to processor SIMD instruction
 ## 2.1 Intel Intrinsics
 
 - **Intel Intrinsics Guide**: https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html
+    
     - You can search this website for specific intrinsic functions, e.g., `_mm256_load_ps`.
+    
 - **Common Operations**:
+    
+    ![image-20250520161900411](./images/image-20250520161900411-1747732448008-18.png)
+    
     - **Load Data**: Load data from memory into SIMD registers.
         - `__m256 a = _mm256_load_ps(float *mem_addr);` (for aligned memory)
+        
+            ```cpp
+            for(size_t i=0;i<n;i+=8){
+                a=_mm256_load_ps(p1+i);
+                b=_mm256_load_ps(p2+i);
+                //_loadu here is for unaligned memeory
+                
+                c=_mm256_load_ps(c,_mm256_mul_ps(a,b));
+            }
+            _mm256_load_ps(sum,c);
+            //_storeu here is for unaligned memory
+            ```
+        
+            
+        
         - `__m256 a = _mm256_loadu_ps(float *mem_addr);` (for unaligned memory)
+        
+            ```cpp
+            size_t nSize=200000009;
+            //float *p1 =new float[nSize]();
+            //float *p2 =new float[nSize]();
+            
+            //256bits align ,C++17 standard
+            float *p1=static_cast<float*>(aligned_alloc(256,nSize*sizeof(float)));
+            float *p2=static_cast<float*>(aligned_alloc(256,nSize*sizeof(float)));
+            float result=0.0f;
+            //Aligned memory allocation
+            ```
+        
+            
+        
     - **Arithmetic Operations (Add, Multiply, etc.)**:
+        
+        ![image-20250520161752592](./images/image-20250520161752592-1747732448008-19.png)
+        
         - `__m256 c = _mm256_add_ps(__m256 a, __m256 b);`
         - `__m256 c = _mm256_mul_ps(__m256 a, __m256 b);`
+        
     - **Store Data**: Store data from SIMD registers back to memory.
+        
+        ![image-20250520161816838](./images/image-20250520161816838-1747732448008-20.png)
+        
         - `_mm256_store_ps(float *mem_addr, __m256 a);` (for aligned memory)
         - `_mm256_storeu_ps(float *mem_addr, __m256 a);` (for unaligned memory)
+    
 - **Naming Conventions**:
     - `ps`: Packed Single-precision (float)
     - `pd`: Packed Double-precision (double)
 
 ## 2.2 ARM Neon Intrinsics
 
+![image-20250520161835864](./images/image-20250520161835864-1747732448008-21.png)
+
 - **ARM Intrinsics Guide**: https://developer.arm.com/architectures/instruction-sets/intrinsics/
+
 - Neon intrinsics operate on 128-bit registers.
+
 - **Common Operations (example with float32x4_t, representing 4 32-bit floats)**:
+    
+    ![image-20250520161933569](./images/image-20250520161933569-1747732448008-22.png)
+    
     - **Load Data**: `float32x4_t vec = vld1q_f32(const float32_t *ptr);`
+    
+    ![image-20250520161947015](./images/image-20250520161947015-1747732448008-23.png)
+    
     - **Arithmetic Operations**: `float32x4_t sum = vaddq_f32(float32x4_t a, float32x4_t b);`
+    
+    ![image-20250520161954653](./images/image-20250520161954653-1747732448009-24.png)
+    
     - **Store Data**: `vst1q_f32(float32_t *ptr, float32x4_t vec);`
 
-![image-20250517154409716](C:\Users\陈孟欣\AppData\Roaming\Typora\typora-user-images\image-20250517154409716.png)
+![image-20250517154409716](./images/image-20250517154409716-1747732448009-25.png)
 
 
 
@@ -133,7 +190,7 @@ Intrinsics are special functions that map directly to processor SIMD instruction
 
     - Check macro definition in code:
 
-        ```
+        ```cpp
         #ifdef WITH_AVX2
         // AVX2 specific code
         #else
@@ -155,16 +212,20 @@ Intrinsics are special functions that map directly to processor SIMD instruction
 
     - Allocate aligned memory (C++17 and later):
 
-        ```
+        ```cpp
         // 256 bits aligned, C++17 standard
         float * p1 = static_cast<float*>(aligned_alloc(32, nSize * sizeof(float)));
-        // Note: The first argument to aligned_alloc is the alignment in bytes,
-        // the second is the total number of bytes to allocate, which must be a multiple of the first.
-        // Requires <cstdlib>
-        // Must be freed with free(p1);
         ```
+        
+        > [!NOTE]
+        >
+        > The first argument to aligned_alloc is the alignment in bytes,the second is the total number of bytes to allocate, which must be a multiple of the first.
+        >
+        > Requires `<cstdlib>`.
+        >
+        > Must be freed with free(p1);
 
-- **Compiler Optimization**: Use the `-O3` optimization level for better performance.
+- **Compiler Optimization**: Use the `-O3` optimization level for **better performance.**
 
 ## 3.2 For ARM CPUs (NEON)
 
@@ -174,20 +235,31 @@ Intrinsics are special functions that map directly to processor SIMD instruction
     - Check compiler documentation for specific flags, e.g., `-mfpu=neon` or `-march=armv8-a+simd`.
     - Include header file: `#include <arm_neon.h>`
 
-- Example Compilation Command (General):
+- Example Compilation Command (General **<u>if the compiler and target platform support NEON)</u>**:
 
-    g++ *.cpp -o main (if the compiler and target platform support NEON)
+    ```bash
+    g++ *.cpp -o main
+    ./main
+    ```
+    
+    ![image-20250520162219973](./images/image-20250520162219973-1747732448009-26.png)
 
-## 3.3 Compilation Tips (Week 8 Example Code)
+## 3.3 Compilation Tips
 
 - If compiling the example code directly with `g++ *.cpp -o main`:
+
+    ![image-20250520162510536](./images/image-20250520162510536-1747732448009-27.png)
 
     - When running on an Intel CPU, ensure `main.cpp` calls `dotproduct_avx2()` instead of `dotproduct_neon()`.
     - Outputting "NEON is not supported" or "AVX2 is not supported" means the respective SIMD instruction set was not compiled or the CPU does not support it.
 
-- Correctly Compiling AVX2 Example:
+- <u>**Correctly**</u> Compiling AVX2 Example:
 
+    ![image-20250520170004559](./images/image-20250520170004559-1747732448009-28.png)
+
+    ```bash
     g++ -o main *.cpp -DWITH_AVX2 -mavx2 -O3
+    ```
 
 - **OpenMP Support**:
 
@@ -200,7 +272,7 @@ OpenMP (Open Multi-Processing) is an API for shared-memory parallel programming,
 
 - **Basic Usage**: Use `#pragma omp` directives to parallelize code blocks, such as loops.
 
-    ```
+    ```cpp
     #pragma omp parallel for
     for (int i = 0; i < n; ++i) {
         // Iterations of this loop will be executed in parallel across multiple threads
@@ -215,7 +287,7 @@ CMake is a cross-platform build system generator. It can be used to manage the c
 
 ## 5.1 CMakeLists.txt Example Configuration
 
-```
+```cmake
 cmake_minimum_required(VERSION 3.12)
 project(simd_openmp_lab)
 
@@ -258,6 +330,13 @@ target_compile_options(my_program PRIVATE -O3)
 3. Compile the project: `make` (or `cmake --build .`)
 4. Run the executable: `./my_program`
 
+```bash
+mkdir build && cd build
+cmake ..
+cmake --build #make
+./my_program
+```
+
 #  Introduction to Python 
 
 Python is an interpreted, high-level, object-oriented programming language.
@@ -265,12 +344,56 @@ Python is an interpreted, high-level, object-oriented programming language.
 ## 6.1 Installing Python
 
 - Download from the official website: https://www.python.org/downloads/
+
+![image-20250520111013692](./images/image-20250520111013692-1747732448009-29.png)
+
 - It is recommended to check "Add python.exe to PATH" during installation.
+
 - If not checked, you need to configure environment variables manually.
+
+    - Right click ‘my computer’ on the desktop
+    - select ‘attribute’-> ‘advanced attribute’->environment variable
+    - configure ‘Path’ with the path where python.exe belongs and its subdirectory ‘Scripts’
+
+    ![image-20250520163514831](./images/image-20250520163514831-1747732448009-30.png)
+
+    ![image-20250520165149775](./images/image-20250520165149775-1747732448009-31.png)
+
+    > [!TIP]
+    >
+    > 如果这里没有配置好`\Scripts\`会导致后续如果要用pip安装需要:
+    >
+    > ```bash
+    > cd C:\Path\Python311\Scripts
+    > pip install somepackage
+    > ```
+    >
+    > 所以要配置子文件夹
 
 ## 6.2 REPL (Read-Eval-Print Loop)
 
 Python provides an interactive environment where you can directly input code and see the results.
+
+```bash
+python
+```
+
+Result:
+
+![image-20250520163532435](./images/image-20250520163532435-1747732448009-32.png)
+
+```python
+a=1
+b=2
+a+b
+
+a="hello world!"
+print(a)
+
+3*a
+```
+
+![image-20250520163709546](./images/image-20250520163709546-1747732448009-33.png)
 
 ## 6.3 Basic Types and Operations
 
@@ -281,6 +404,10 @@ Python provides an interactive environment where you can directly input code and
 - **Set Type**: `set`
 - **Dictionary Type**: `dict`
 - **Binary Sequence Types**: `bytes`, `bytearray`
+
+
+
+Reference from [the docs](https://docs.python.org/3/library/stdtypes.html)
 
 ## 6.4 Mutable & Immutable Types
 
@@ -300,7 +427,7 @@ Other values are generally considered True.
 
 - **if Statement**:
 
-    ```
+    ```python
     foo = []
     if foo: # Empty list is considered False
         print(foo)
@@ -310,7 +437,7 @@ Other values are generally considered True.
 
 - **for Loop**:
 
-    ```
+    ```python
     my_list = ['dog', 'cat', 'bird']
     for item in my_list:
         print(item)
@@ -324,7 +451,7 @@ Other values are generally considered True.
 
 - **while Loop**:
 
-    ```
+    ```python
     count = 5
     while count > 0:
         print(count, end=" ")
@@ -333,7 +460,7 @@ Other values are generally considered True.
 
 ## 6.7 Defining Functions
 
-```
+```python
 def greet(name):
     return f"Hello, {name}!"
 
@@ -354,7 +481,7 @@ print(message) # Output: Hello, World!
 
 Write a program to implement the addition of two floating-point vectors. The vector size should be greater than 1 million.
 
-1. Implement using pure C/C++ code.
+1. Implement using **pure** `C/C++` code.
 2. Optimize the vector addition using SIMD (AVX2 or NEON) instructions.
 3. Compare the execution speed of the pure C/C++ version and the SIMD optimized version.
 4. Try to further accelerate the SIMD version of vector addition using OpenMP. Verify the correctness of the results.
@@ -525,18 +652,40 @@ int main() {
 
 **Example Compilation Commands (GCC/Clang, assuming filename `lab08_exercise.cpp`):**
 
-- **Pure C++**: `g++ lab08_exercise.cpp -o lab08_cpp -O3 -std=c++17`
+- **Pure C++**: 
 
-- **AVX2**: `g++ lab08_exercise.cpp -o lab08_avx2 -DWITH_AVX2 -mavx2 -O3 -std=c++17`
+    ```bash
+    g++ lab08_exercise.cpp -o lab08_cpp -O3 -std=c++17
+    ```
 
-- AVX2 + OpenMP: g++ lab08_exercise.cpp -o lab08_avx2_omp -DWITH_AVX2 -mavx2 -fopenmp -O3 -std=c++17
+- **AVX2**: 
 
-    (For Clang, OpenMP might require linking additional libraries, e.g., -lomp)
+    ```bash
+    g++ lab08_exercise.cpp -o lab08_avx2 -DWITH_AVX2 -mavx2 -O3 -std=c++17
+    ```
+
+- AVX2 + OpenMP: 
+
+    ```bash
+    g++ lab08_exercise.cpp -o lab08_avx2_omp -DWITH_AVX2 -mavx2 -fopenmp -O3 -std=c++17
+    ```
+    
+    **For Clang, OpenMP** might **require linking additional libraries**, e.g., `-lomp`
+
+![image-20250520165750672](./images/image-20250520165750672-1747732448009-34.png)
 
 **Questions for Thought**:
 
 - How much performance improvement did SIMD optimization provide?
 - How much additional performance improvement can OpenMP provide on top of SIMD? Why?
 - What is the impact of memory alignment on SIMD performance? What happens if you don't use aligned memory or `loadu/storeu` instructions?
+
+
+
+**My thoughts**:
+
+
+
+----
 
 *CC BY NC SA (Content adapted from course materials)*
